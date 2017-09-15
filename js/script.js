@@ -16,6 +16,6 @@ $.getJSON(baseURL + '/streams/geekandsundry?callback=?', processResults);
 function processResults(results) {
   if (debug) {console.log("Processing:\n" + JSON.stringify(results,null,'\t'));};
   listHTML += tmpl.render(results);
-  console.log("ListHTML = " + listHTML);
+//  console.log("ListHTML = " + listHTML);
   $('#streamList').html(listHTML);
 }
