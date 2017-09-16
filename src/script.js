@@ -2,10 +2,12 @@
 /*global $, jQuery*/
 
 var debug = true,
+stitch = require("stitch"),
 streamers = ["ESL_SC2", "OgamingSC2", "cretetion", "freecodecamp", "storbeck", "habathcx", "RobotCaleb", "noobs2ninjas"],
 baseURL = "https://wind-bow.glitch.me/twitch-api",
 tmpl = $.templates("#streamerTemplate"),
 listHTML = "";
+client = new stitch.StitchClient("mister-twitch-cebka");
 
 $(document).ready(function () {
   if (debug){console.log("Document ready!");}
