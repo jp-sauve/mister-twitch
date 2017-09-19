@@ -1,0 +1,19 @@
+{
+    "name": "mister-twitch",
+    "version": "0.0.1",
+    "private": true,
+    "description": "FCC Intermediate Front-End Project",
+    "scripts": {
+        "build": "babel --presets env src/app.js -o dist/bundle.js",
+        "watch": "webpack -d --watch"
+    },
+    "license": "MIT",
+    "dependencies": {},
+    "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-core": "^6.26.0",
+        "babel-loader": "^7.1.2",
+        "babel-preset-env": "^1.6.0",
+        "webpack": "^3.6.0"
+    }
+}
