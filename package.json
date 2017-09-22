@@ -5,7 +5,9 @@
     "description": "FCC Intermediate Front-End Project",
     "scripts": {
         "build": "babel --presets env src/app.js -o dist/bundle.js",
-        "watch": "webpack -d --watch"
+        "pack": "webpack",
+        "watch": "npm run pack -- -d --watch",
+        "test": "mocha"
     },
     "license": "MIT",
     "dependencies": {},
@@ -14,6 +16,8 @@
         "babel-core": "^6.26.0",
         "babel-loader": "^7.1.2",
         "babel-preset-env": "^1.6.0",
+        "chai": "^4.1.2",
+        "mocha": "^3.5.3",
         "webpack": "^3.6.0"
     }
 }

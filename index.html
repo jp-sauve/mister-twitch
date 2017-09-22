@@ -16,7 +16,7 @@
         Twitch Status
       </h1>
       <h2 class="subtitle">
-        Current and Historical data
+        <b>Current and Historical data</b>
       </h2>
     </div>
   </div>
@@ -39,14 +39,45 @@
   <footer><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Mister Twitch</span>
      by <a xmlns:cc="http://creativecommons.org/ns#" href="https://grokology.ca" property="cc:attributionName" rel="cc:attributionURL">Grokology</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
      <br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="http://bulma.io/" rel="dct:source">http://bulma.io/</a>.</footer>
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.88/jsrender.min.js"></script>
+
 
      <!-- -=-=-=-=-=-=-=-= SCRIPTS -=-=-=-=-=-=-= -->
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.88/jsrender.min.js"></script>
-
-  <script id="streamerTemplate" type="text/x-jsrender">
+<script id="inactiveStreamTemplate" type="text/x-jsrender">
+<div class="box">
+  <article class="media">
+    <div class="media-left">
+      <figure class="image is-128x128">
+        <img src="{{:stream.preview.large}}" alt="Image">
+      </figure>
+    </div>
+    <div class="media-content">
+      <div class="content">
+        <p>
+          <strong>{{:stream.channel.display_name}}</strong> <small>{{:stream.channel.game}}</small> <small>31m</small>
+          <br>
+          {{:stream.channel.status}}
+        </p>
+      </div>
+      <nav class="level is-mobile">
+        <div class="level-left">
+          <a class="level-item">
+            <span class="icon is-small"><i class="fa fa-reply"></i></span>
+          </a>
+          <a class="level-item">
+            <span class="icon is-small"><i class="fa fa-retweet"></i></span>
+          </a>
+          <a class="level-item">
+            <span class="icon is-small"><i class="fa fa-heart"></i></span>
+          </a>
+        </div>
+      </nav>
+    </div>
+  </article>
+</div>
+</script>
+  <script id="activeStreamTemplate" type="text/x-jsrender">
      <div class="box">
        <article class="media">
          <div class="media-left">
@@ -80,6 +111,5 @@
      </div>
 
      </script>
-     <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
 <script src="dist/bundle.js"></script>
 </html>
