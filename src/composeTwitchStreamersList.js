@@ -9,70 +9,60 @@ let debug = true,
 
 function getTList(...allProps) {
   let [streamers, ...moreProps] = allProps,
-  allRequestPromises = [],
+    streamerRequests = [],
+    channelRequests = [],
     baseURLonline = 'https://wind-bow.glitch.me/twitch-api/streams/',
+    baseURLoffline = 'https://wind-bow.glitch.me/twitch-api/channels/',
     composedListHTML = '';
-
-  if (debug) {
-    console.log('Getting TList for ' + streamers.toString())
-  };
-
+if (allProps) {console.log("You've given unexpected properties to getTList function!\n");}
   for (let [index, streamer] of streamers.entries()) {
-    if (debug) {
-      console.log('About to push ' + 'streamer' + ' to entry ' + index + ".\n");
-    }
-    allRequestPromises.push(new Promise((resolve, reject) => {
-      $.getJSON(baseURLonline + streamer, function(results) {
-        if (results.stream === null) {
-          var user = results._links.self.substr(37);
-          console.log(user + 'is offline!\n');
-          return processOffline(user);
-        } else {
-          return new Promise((resolve, reject) => {
-            if (debug) {
-              console.log(results.stream.channel.display_name + ' is online!\n');
-            }
-            const strippedResults = {
-              stream: results.stream,
-              preview: {
-                large: results.stream.preview.large,
-              },
-              channel: {
-                display_name: results.stream.channel.display_name,
-                status: results.stream.channel.status,
-                game: results.stream.channel.game,
-              },
-            };
-            resolve(strippedResults);
-          });
-        }
-      });
+    streamerRequests.push($.getJSON(baseURLonline + streamer, function(results) {
+      return results;
     }));
+
+    channelRequests.push($.getJSON(baseURLoffline + streamer, function(results) {
+      return results;
+    }));
+
   }
-  Promise.all(allRequestPromises)
-    .then(function(results) {
-      results.forEach(function(item) {
-        console.log("Item: " + JSON.stringify(item));
-        // Future site of passing the json through the jsrender template
-      })
+  let onlinePromises = Promise.all(streamerRequests),
+    offlinePromises = Promise.all(channelRequests);
+
+  Promise.all([onlinePromises, offlinePromises])
+    .then(results => {
+
+      results[0].forEach(function(item) {
+        console.log("\nCOMPLETED PROMISES 0\n" + JSON.stringify(item));
+      });
+      results[1].forEach(function(item) {
+        console.log("\nCOMPLETED PROMISES 2\n" + JSON.stringify(item));
+      });
+
     })
 };
 
-function processOffline(user) {
-  let baseURLoffline = 'https://wind-bow.glitch.me/twitch-api/channels/';
-  return new Promise((resolve, reject) => {
-    $.getJSON(baseURLoffline + user + '?callback=', function(results) {
-      const strippedResults = {
-        channel: {
-          display_name: results.display_name,
-          url: results.url,
-          logo: results.logo || "http://default.image"
-        }
-      };
-      resolve(strippedResults);
-    });
-  });
-};
+function stripResults(...rawResults) {
+  let onlineListedFirst = (rawResults[0].stream !== null);
+
+  const onlineStrippedResults = {
+    stream: results.stream,
+    preview: {
+      large: results.stream.preview.large,
+    },
+    channel: {
+      display_name: results.stream.channel.display_name,
+      status: results.stream.channel.status,
+      game: results.stream.channel.game,
+    }
+  };
+  const offlineStrippedResults = {
+    channel: {
+      display_name: results.display_name,
+      url: results.url,
+      logo: results.logo || "http://default.image"
+    }
+  };
+}
 
 
 function addHTMLToList(renderedHTML) {
