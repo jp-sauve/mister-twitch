@@ -2,73 +2,68 @@
 /*global $, jQuery*/
 
 let debug = true,
-onlinetmpl = $.templates('#activeStreamTemplate'),
-offlinetmpl = $.templates('#inactiveStreamTemplate');
+  onlinetmpl = $.templates('#activeStreamTemplate'),
+  offlinetmpl = $.templates('#inactiveStreamTemplate');
 // Take in list of Twitch streamer names, make api call
 // and return HTML list, ready for insertion
 
-function getTList (...allProps) {
+function getTList(...allProps) {
   let [streamers, ...moreProps] = allProps,
-  allRequestPromises = [],
-  baseURLonline = 'https://wind-bow.glitch.me/twitch-api/streams/',
-  composedListHTML = '';
+  streamerRequests = [],
+    channelRequests = [],
+    baseURLonline = 'https://wind-bow.glitch.me/twitch-api/streams/',
+    baseURLoffline = 'https://wind-bow.glitch.me/twitch-api/channels/';
 
-  if (debug) {console.log('Getting TList for ' + streamers.toString())};
-
-for (let [index, streamer] of streamers.entries()) {
-  if (debug) {console.log('About to push entry ' + index + ".\n");}
-  allRequestPromises.push($.getJSON(baseURLonline + streamer, processResults));
+  for (let [index, streamer] of streamers.entries()) {
+    streamerRequests.push($.getJSON(baseURLonline + streamer, function(results) {
+      return results;
+    }));
+    channelRequests.push($.getJSON(baseURLoffline + streamer, function(results) {
+      return results;
+    }));
   }
-Promise.all(allRequestPromises)
-  .then(function(results){
-    results.forEach(function(item){
-      console.log("Item: " + JSON.stringify(item));
-    })
-  })
+  let onlinePromises = Promise.all(streamerRequests),
+    offlinePromises = Promise.all(channelRequests);
+
+  Promise.all([onlinePromises, offlinePromises])
+    .then(allResults => {
+
+      for (let [index, streamerResult] of allResults[0].entries()) {
+        if (streamerResult.stream !== null) {
+          const streamerStrippedResults = {
+            stream: {
+            preview: {
+              large: streamerResult.stream.preview.large,
+            },
+            channel: {
+              display_name: streamerResult.stream.channel.display_name,
+              status: streamerResult.stream.channel.status,
+              game: streamerResult.stream.channel.game,
+            }
+          }
+          };
+          console.log("\nOnline:\n" + JSON.stringify(streamerStrippedResults,null,'\t'));
+          addHTMLToList(onlinetmpl.render(streamerStrippedResults));
+        } else {
+          const channelStrippedResults = {
+            channel: {
+              display_name: allResults[1][index].display_name,
+              url: allResults[1][index].url,
+              logo: allResults[1][index].logo || "/mister-twitch/images/logo-transp-dark-300.png"
+            }
+          };
+          console.log("\nOffline:\n" + JSON.stringify(channelStrippedResults,null,'\t'));
+          addHTMLToList(offlinetmpl.render(channelStrippedResults));
+        }
+      }
+    });
+
 };
 
-function processResults(results) {
-  if (results.stream === null) {
-    var user = results._links.self.substr(37);
-    console.log(user + ' is offline!\n');
-    return processOffline(user);
-  } else {
-    return new Promise((resolve,reject) => {
-      const strippedResults = {
-        stream: results.stream,
-        preview: {
-          large: results.stream.preview.large,
-        },
-        channel: {
-          display_name: results.stream.channel.display_name,
-          status: results.stream.channel.status,
-          game: results.stream.channel.game,
-    },
-  };
-  resolve(strippedResults);
-      });
-}}
-
-function processOffline(user) {
-  let baseURLoffline = 'https://wind-bow.glitch.me/twitch-api/channels/';
-  return new Promise((resolve,reject) =>{
-  $.getJSON(baseURLoffline + user + '?callback=',function(results) {
-    const strippedResults = {
-      channel: {
-        display_name: results.display_name,
-        url: results.url,
-        logo: results.logo || "http://default.image"
-      }
-    };
-      resolve(strippedResults);
-//
-  });
-  });
-  };
-
-
 function addHTMLToList(renderedHTML) {
-  listHTML += renderedHTML;
-  $( '#streamList' ).html();
+  let composedListHTML = renderedHTML;
+  $('#streamList').append(composedListHTML);
 }
-export { getTList };
+export {
+  getTList
+};
