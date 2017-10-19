@@ -41,7 +41,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.88/jsrender.min.js"></script>
   <script id="inactiveStreamTemplate" type="text/x-jsrender">
-    <div class="box" [disabled]>
+    <div class="box has-text-danger" [disabled]>
       <article class="media">
         <div class="media-left">
           <figure class="image is-128x128">
@@ -73,7 +73,7 @@
     </div>
   </script>
   <script id="activeStreamTemplate" type="text/x-jsrender">
-  <a href=":stream.url">
+  <a href="{{:stream.url}}">
     <div class="box is-primary">
       <article class="media">
         <div class="media-left">

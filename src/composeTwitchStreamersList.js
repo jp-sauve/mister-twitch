@@ -27,11 +27,13 @@ function getTList( streamers ) {
   Promise.all( [ onlinePromises, offlinePromises ] ).then( ( [ online, offline ] ) => {
     for ( let [ index, streamerResult ] of online.entries() ) {
       if ( streamerResult.stream !== null ) {
+        if (debug){console.log(JSON.stringify(streamerResult, null, '\t'))};
         const streamerStrippedResults = {
           stream: {
             preview: {
               large: streamerResult.stream.preview.large
             },
+            url: streamerResult.stream.channel.url,
             channel: {
               display_name: streamerResult.stream.channel.display_name,
               status: streamerResult.stream.channel.status,
@@ -39,6 +41,7 @@ function getTList( streamers ) {
             }
           }
         };
+        if (debug){console.log("Stripped:\n" + JSON.stringify(streamerStrippedResults, null, '\t'))};
         addHTMLToList( onlinetmpl.render( streamerStrippedResults ) );
       } else {
         const channelStrippedResults = {
@@ -49,7 +52,7 @@ function getTList( streamers ) {
             last_seen: timeElapsed( offline[ index ].updated_at )
           }
         };
-        console.log( "\nOffline:\n" + JSON.stringify( channelStrippedResults, null, '\t' ) );
+  //      console.log( "\nOffline:\n" + JSON.stringify( channelStrippedResults, null, '\t' ) );
         addHTMLToList( offlinetmpl.render( channelStrippedResults ) );
       }
     }
@@ -57,7 +60,7 @@ function getTList( streamers ) {
 };
 
 function addHTMLToList( renderedHTML ) {
-  $( '#streamList' ).append( composedListHTML );
+  $( '#streamList' ).append( renderedHTML );
 }
 export {
   getTList
