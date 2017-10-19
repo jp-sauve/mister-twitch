@@ -1,4 +1,4 @@
-#Mister-Twitch
+# Mister-Twitch
 Simple TwitchTV status panel, built using...Bulma? jQuery?
 ##Getting Started
 Follow these instructions for proper use"
@@ -7,11 +7,11 @@ Follow these instructions for proper use"
 2. Look
 3. Stop
 ```
-###Prerequisites
+### Prerequisites
 A computer, the internet, and operating system, and a web browser. Time. Air to consume while doing steps one[1] and two[2].
-###Contributing
+### Contributing
 You can't. It's my project, but thanks. Maybe I'll accept comments, especially if you're a client or friend.
-###Versioning
+### Versioning
 I will use [Semantic Versioning](http://semver.org)
-###License
+### License
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
