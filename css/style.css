@@ -1,0 +1,15 @@
+body {
+  background-color: #DEE;
+}
+img.offline {
+  filter: saturate(0%) brightness(250%) contrast(40%) drop-shadow(0px 5px 5px red);
+}
+img.online {
+  filter: drop-shadow(0px 5px 5px green);
+}
+.media-content {
+  overflow: hidden;
+}
+.listhead {
+  margin: auto;
+}

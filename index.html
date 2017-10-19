@@ -7,6 +7,7 @@
     <title>Mister Twitch</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.2/css/bulma.min.css">
+    <link rel="stylesheet" href="css/style.css">
   </head>
 
   <body>
@@ -23,16 +24,9 @@
       </div>
     </section>
     <section class="section">
-      <div class="container">
-        <h1 class="title is-1">
-        Streamers
-      </h1>
-        <p class="subtitle is-4">
-          Masterlist
-        </p>
         <div id="streamList" class="container">
+          <button class="button is-primary is-large is-loading">Loading...</button>
         </div>
-      </div>
     </section>
   </body>
   <footer><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Mister Twitch</span>    by <a xmlns:cc="http://creativecommons.org/ns#" href="https://grokology.ca" property="cc:attributionName" rel="cc:attributionURL">Grokology</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
@@ -41,70 +35,45 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.88/jsrender.min.js"></script>
   <script id="inactiveStreamTemplate" type="text/x-jsrender">
-    <div class="box has-text-danger" [disabled]>
+    <div class="box">
       <article class="media">
-        <div class="media-left">
-          <figure class="image is-128x128">
-            <img src="{{:channel.logo}}" alt="Image">
-          </figure>
-        </div>
-        <div class="media-content">
-          <div class="content">
-            <p>
-              <strong>{{:channel.display_name}}</strong> <small>Seen {{:channel.last_seen}} ago</small>
-              <br> {{:url}}
-            </p>
+        <a href="{{>channel.url}}">
+          <div class="media-left">
+            <figure class="image is-128x128">
+              <img src="{{:channel.logo}}" alt="Image" class="offline">
+            </figure>
           </div>
-          <nav class="level is-mobile">
-            <div class="level-left">
-              <a class="level-item">
-            <span class="icon is-small"><i class="fa fa-reply"></i></span>
-          </a>
-              <a class="level-item">
-            <span class="icon is-small"><i class="fa fa-retweet"></i></span>
-          </a>
-              <a class="level-item">
-            <span class="icon is-small"><i class="fa fa-heart"></i></span>
-          </a>
+          <div class="media-content">
+            <div class="content">
+              <p>
+                <strong>{{:channel.display_name}}</strong> <small>Seen {{:channel.last_seen}} ago</small>
+                <br>
+              </p>
             </div>
-          </nav>
-        </div>
+        </a>
       </article>
-    </div>
+      </div>
   </script>
   <script id="activeStreamTemplate" type="text/x-jsrender">
-  <a href="{{:stream.url}}">
     <div class="box is-primary">
       <article class="media">
-        <div class="media-left">
-          <figure class="image is-128x128">
-            <img src="{{:stream.preview.large}}" alt="Image">
-          </figure>
-        </div>
-        <div class="media-content">
-          <div class="content">
-            <p>
-              <strong>{{:stream.channel.display_name}}</strong> <small>{{:stream.channel.game}}</small> <small>Active now!</small>
-              <br> {{:stream.channel.status}}
-            </p>
+        <a href="{{>stream.url}}">
+          <div class="media-left">
+            <figure class="image is-128x128">
+              <img src="{{:stream.preview.large}}" alt="Image" class="online">
+            </figure>
           </div>
-          <nav class="level is-mobile">
-            <div class="level-left">
-              <a class="level-item">
-                 <span class="icon is-small"><i class="fa fa-reply"></i></span>
-               </a>
-              <a class="level-item">
-                 <span class="icon is-small"><i class="fa fa-retweet"></i></span>
-               </a>
-              <a class="level-item">
-                 <span class="icon is-small"><i class="fa fa-heart"></i></span>
-               </a>
+          <div class="media-content">
+            <div class="content">
+              <p>
+                <strong>{{:stream.channel.display_name}}</strong> <small>{{:stream.channel.game}}</small> <small>Active now!</small>
+                <br> {{:stream.channel.status}}
+              </p>
             </div>
-          </nav>
+        </a>
         </div>
       </article>
     </div>
-    </a>
   </script>
   <script src="dist/bundle.js"></script>
 
